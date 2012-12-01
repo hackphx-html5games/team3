@@ -7,13 +7,18 @@ require([
     var speed = 1;
 
     //setup a ResourceManager to use in the game
-    var rm = new ResourceManager();
-    var backImg = rm.loadImage('app/resources/images/GameBack.png');
-    var gnome = new Gnome({ x: 0, y: 0 });
+    var rm = new ResourceManager()
+      , backImg = rm.loadImage('app/resources/images/GameBack.png')
+      , hole = { x: 800, y: 0 }
+      , interval = 1000
+      , gnomes = []
+
+  gnomes.push(new Gnome(hole))
+
     var circle = new Circle({
         x: 400,
-        y: 400,
-        radius: 150
+        y: 600,
+        radius: 100
     });
 
     //setup a GameCore instance
@@ -26,23 +31,38 @@ require([
             context.beginPath();
 
             // Draw collision test circle
-            var color = gnome.collidesWithCircle(circle) ? "red" : "green";
+            var color = gnomes[0].collidesWithCircle(circle) ? "red" : "green";
             context.fillStyle = color;
             context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI + 1);
             
             // Draw the gnome's collision circle.
-            context.arc(gnome.x, gnome.y, gnome.radius, 0, 2 * Math.PI + 1);
             context.closePath();
             context.fill();
 
-            gnome.draw(context);
+            gnomes.forEach(function (gnome) {
+              gnome.draw(context);
+              //context.arc(gnome.x, gnome.y, gnome.radius, 0, 2 * Math.PI + 1);
+            })
         },
         update: function(millis){
-            gnome.x += speed;
+          gnomes.forEach(function (gnome) {
+            gnome.x -= speed/1.75;
             gnome.y += speed;
+          gnomify()
+          })
         }
     });
 
+    var lastGnome = Date.now()
+
+    function gnomify () {
+      var now = Date.now()
+      if (now > lastGnome + interval) {
+        gnomes.push(new Gnome(hole))
+        lastGnome = now
+      }
+    }
+
     //launch the game!
-    game.run();
+    game.run()
 });

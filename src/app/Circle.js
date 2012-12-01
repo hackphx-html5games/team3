@@ -9,6 +9,7 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
         x: 0,
         y: 0,
         radius: 0,
+        hp: 100,
 
         constructor: function(args) {
             // TODO: This may be unnecessary. dojo/_base/declare may mixin args by default.
@@ -23,6 +24,12 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
         collidesWithCircle: function(c) {
             var d = distance(this, c);
             return d < (this.radius + c.radius);
+        },
+
+        alive: function () {
+          if (this.hp >= 0) return true
+
         }
+
     });
 });
