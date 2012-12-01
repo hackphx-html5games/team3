@@ -1,12 +1,11 @@
-require([ 'frozen/GameCore', 'frozen/ResourceManager' ], function(GameCore, ResourceManager){
-    var x = 0;
-    var y = 0;
+require([ 'frozen/GameCore', 'frozen/ResourceManager', 'app/Gnome' ], function(GameCore, ResourceManager, Gnome){
     var speed = 1;
 
     //setup a ResourceManager to use in the game
     var rm = new ResourceManager();
     var backImg = rm.loadImage('app/resources/images/GameBack.png');
-    var gnome = rm.loadImage('app/resources/images/gnome.png');
+    var gnome = new Gnome({ x: 0, y: 0 });
+
 
     //setup a GameCore instance
     var game = new GameCore({
@@ -14,11 +13,11 @@ require([ 'frozen/GameCore', 'frozen/ResourceManager' ], function(GameCore, Reso
         resourceManager: rm,
         draw: function(context){
             context.drawImage(backImg, 0, 0, this.width, this.height);
-            context.drawImage(gnome, x, y);
+            gnome.draw(context);
         },
         update: function(millis){
-            x += speed;
-            y += speed;
+            gnome.x += speed;
+            gnome.y += speed;
         }
     });
 
