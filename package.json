@@ -1,0 +1,12 @@
+{ "name": "tower"
+, "version": "0.0.1"
+, "main": "flates.js"
+, "scripts": { "test": "./node_modules/.bin/tap ./test" }
+, "dependencies": { "ecstatic": "*" }
+, "devDependencies": { "tap": "*" }
+, "engines": { "node": "~0.8" }
+, "repository":
+  { "type": "git"
+  , "url": "https://github.com/hackphx-html5games/team3.git"
+  }
+}
