@@ -24,9 +24,13 @@ require([
             context.drawImage(backImg, 0, 0, this.width, this.height);
 
             context.beginPath();
+
+            // Draw collision test circle
             var color = gnome.collidesWithCircle(circle) ? "red" : "green";
             context.fillStyle = color;
             context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI + 1);
+            
+            // Draw the gnome's collision circle.
             context.arc(gnome.x, gnome.y, gnome.radius, 0, 2 * Math.PI + 1);
             context.closePath();
             context.fill();
