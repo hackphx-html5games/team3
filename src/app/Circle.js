@@ -1,4 +1,4 @@
-define([ "dojo/_base/declare", "dojo/_base/lang" ], function(declare, lang) {
+define([ "dojo/_base/declare" ], function(declare, lang) {
     function distance(p1, p2) {
         var x = p1.x - p2.x,
             y = p1.y - p2.y;
@@ -12,7 +12,7 @@ define([ "dojo/_base/declare", "dojo/_base/lang" ], function(declare, lang) {
 
         constructor: function(args) {
             // TODO: This may be unnecessary. dojo/_base/declare may mixin args by default.
-            lang.mixin(this, args);
+            declare.safeMixin(this, args);
         },
 
         collidesWithPoint: function(p) {
