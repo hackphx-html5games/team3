@@ -114,13 +114,11 @@ require([
         }
     });
 
-    var lastShot = Date.now()
-
     function shoot (tower) {
       var now = Date.now()
-      if (now > lastShot + 500) {
+      if (now > tower.lastShot + 500) {
         bullets.push(new Bullet({ x: tower.x, y: tower.y, radius: 5 }))
-        lastShot = now
+        tower.lastShot = now
       }
     }
 
@@ -128,6 +126,7 @@ require([
 
     function towerify (obj) {
       var now = Date.now()
+      obj.lastShot = now
       if (now > lastTower + interval) {
         towers.push(new Tower(obj))
         lastTower = now
