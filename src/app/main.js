@@ -2,16 +2,20 @@ require([
     'frozen/GameCore',
     'frozen/ResourceManager',
     'app/Gnome',
-    'app/Circle'
-], function(GameCore, ResourceManager, Gnome, Circle) {
-    var speed = 1;
+    'app/Circle',
+    'app/Tower',
+    'app/Bullet',
+    'dojo/keys'
 
+], function(GameCore, ResourceManager, Gnome, Circle, Tower, Bullet, keys) {
     //setup a ResourceManager to use in the game
     var rm = new ResourceManager()
       , backImg = rm.loadImage('app/resources/images/gamebackround.png')
       , hole = { x: 800, y: 0, hp: 200 }
       , interval = 1000
       , gnomes = []
+      , towers = []
+      , bullets = []
 
   var path =
     [ { x: 790, y: 20}
@@ -50,7 +54,14 @@ require([
         canvasId: 'canvas',
         resourceManager: rm,
         initInput: function (im) {
-
+          im.addKeyAction(keys.SPACE)
+        },
+        handleInput: function(im){
+          if(im.keyActions[keys.SPACE].isPressed()) {
+            if(im.mouseAction.position){
+              towerify({ x: im.mouseAction.position.x, y: im.mouseAction.position.y})
+            }
+          }
         },
         draw: function(context){
             context.drawImage(backImg, 0, 0, this.width, this.height);
@@ -66,21 +77,62 @@ require([
             context.closePath();
             context.fill();
 
+            towers.forEach(function (tower) {
+              tower.draw(context);
+            })
+
             gnomes.forEach(function (gnome) {
               gnome.draw(context);
               //context.arc(gnome.x, gnome.y, gnome.radius, 0, 2 * Math.PI + 1);
+            })
+
+            bullets.forEach(function (bullet) {
+              bullet.draw(context);
             })
         },
         update: function(millis){
           gnomes = gnomes.filter(function (gnome) {
             return gnome.isAlive()
           })
+
+          bullets.forEach(function (bullet) {
+            bullet.shoot(gnomes, millis)
+          })
+
+          bullets = bullets.filter(function (bullet) {
+            return bullet.isAlive()
+          })
+
+          towers.forEach(function (tower) {
+            shoot(tower)
+          })
+
           gnomes.forEach(function (gnome) {
             gnome.move(path, millis)
           gnomify()
           })
         }
     });
+
+    var lastShot = Date.now()
+
+    function shoot (tower) {
+      var now = Date.now()
+      if (now > lastShot + 500) {
+        bullets.push(new Bullet({ x: tower.x, y: tower.y, radius: 5 }))
+        lastShot = now
+      }
+    }
+
+    var lastTower = Date.now()
+
+    function towerify (obj) {
+      var now = Date.now()
+      if (now > lastTower + interval) {
+        towers.push(new Tower(obj))
+        lastTower = now
+      }
+    }
 
     var lastGnome = Date.now()
 

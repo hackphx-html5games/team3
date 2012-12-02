@@ -13,6 +13,8 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
         wp: 0,
         radius: 0,
         hp: 100,
+        dmg: 10,
+        target: null,
 
         constructor: function(args) {
             // TODO: This may be unnecessary. dojo/_base/declare may mixin args by default.
@@ -31,7 +33,8 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
 
         move: function (path, ms) {
           var dest = path[this.wp]
-          if (!dest) return this.hp = 0
+          if (!dest) return this.hp = -10
+          this.target = dest
           var diffX = this.x - dest.x
           var diffY = this.y - dest.y
           var relX = ms*this.dx
@@ -43,11 +46,42 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
           if (diffY > 0) this.y -= relY
           else if (diffY < 0) this.y += relY
 
-          if (this.collidesWithCircle(dest)) this.wp += 1
+          if (this.collidesWithCircle(dest)) {
+            this.wp += 1
+          }
         },
 
+        shoot: function (path, ms) {
+          var dest = path[this.wp]
+          if (!dest) return this.hp = -10
+          this.target = dest
+          var diffX = this.x - dest.x
+          var diffY = this.y - dest.y
+          var relX = ms*this.dx
+          var relY = ms*this.dy
+
+          if (diffX > 0) this.x -= relX
+          else if (diffX < 0) this.x += relX
+
+          if (diffY > 0) this.y -= relY
+          else if (diffY < 0) this.y += relY
+
+          if (this.collidesWithCircle(dest)) {
+            this.target.hp -= 10
+            this.hp = -10
+          }
+        },
+
+
         isAlive: function () {
-          if (this.hp >= 0) return true
+          if (this.hp > 0) return true
+        },
+
+        hit: function () {
+          if (this.collidesWithCircle(this.target)) {
+            this.target.hp -= this.dmg
+            this.hp = -10
+          }
         }
 
     });
