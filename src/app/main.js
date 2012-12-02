@@ -8,17 +8,42 @@ require([
 
     //setup a ResourceManager to use in the game
     var rm = new ResourceManager()
-      , backImg = rm.loadImage('app/resources/images/GameBack.png')
-      , hole = { x: 800, y: 0 }
+      , backImg = rm.loadImage('app/resources/images/gamebackround.png')
+      , hole = { x: 800, y: 0, hp: 200 }
       , interval = 1000
       , gnomes = []
+
+  var path =
+    [ { x: 790, y: 20}
+    , { x: 150, y: 60 }
+    , { x: 60, y: 125 }
+    , { x: 75, y: 175 }
+    , { x: 725, y: 175 }
+    , { x: 775, y: 225 }
+    , { x: 750, y: 275 }
+    , { x: 70, y: 320 }
+    , { x: 25, y: 360 }
+    , { x: 25, y: 420 }
+    , { x: 100, y: 425 }
+    , { x: 750, y: 420 }
+    , { x: 775, y: 450 }
+    , { x: 725, y: 475 }
+    , { x: 425, y: 500 }
+    , { x: 425, y: 600 }
+    ]
+
+  path = path.map(function (obj) {
+    obj.radius = 20
+    return new Circle(obj)
+  })
+  console.log(path)
 
   gnomes.push(new Gnome(hole))
 
     var circle = new Circle({
         x: 400,
         y: 600,
-        radius: 100
+        radius: 10
     });
 
     //setup a GameCore instance
@@ -45,9 +70,11 @@ require([
             })
         },
         update: function(millis){
+          gnomes = gnomes.filter(function (gnome) {
+            return gnome.isAlive()
+          })
           gnomes.forEach(function (gnome) {
-            gnome.x -= speed/1.75;
-            gnome.y += speed;
+            gnome.move(path, millis)
           gnomify()
           })
         }
