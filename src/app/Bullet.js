@@ -13,6 +13,8 @@ define([
         _relativeImageY: 0,
         width: 0,
         height: 0,
+        dx: .2,
+        dy: .2,
 
         image: gnomeImg,
         constructor: function(args) {

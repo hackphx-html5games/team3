@@ -116,7 +116,7 @@ require([
 
     function shoot (tower) {
       var now = Date.now()
-      if (now > tower.lastShot + 500) {
+      if (now > tower.lastShot + 1000) {
         bullets.push(new Bullet({ x: tower.x, y: tower.y, radius: 5 }))
         tower.lastShot = now
       }
