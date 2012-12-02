@@ -8,14 +8,14 @@ require([
     'dojo/keys'
 
 ], function(GameCore, ResourceManager, Gnome, Circle, Tower, Bullet, keys) {
-    //setup a ResourceManager to use in the game
-    var rm = new ResourceManager()
-      , backImg = rm.loadImage('app/resources/images/gamebackroundhome.png')
-      , hole = { x: 800, y: 0, hp: 200 }
-      , interval = 1000
-      , gnomes = []
-      , towers = []
-      , bullets = []
+  //setup a ResourceManager to use in the game
+  var rm = new ResourceManager()
+    , backImg = rm.loadImage('app/resources/images/gamebackroundhome.png')
+    , hole = { x: 800, y: 0, hp: 200 }
+    , interval = 1000
+    , gnomes = []
+    , towers = []
+    , bullets = []
 
   var path =
     [ { x: 790, y: 20}
@@ -35,6 +35,9 @@ require([
     , { x: 425, y: 500 }
     , { x: 425, y: 600 }
     ]
+
+  player =
+    { hp: 1000 }
 
   path = path.map(function (obj) {
     obj.radius = 10
@@ -85,6 +88,7 @@ require([
         },
         update: function(millis){
           gnomes = gnomes.filter(function (gnome) {
+            if (gnome.countDown && gnome.countDown > 0) return true
             return gnome.isAlive()
           })
 
@@ -101,9 +105,14 @@ require([
           })
 
           gnomes.forEach(function (gnome) {
-            gnome.move(path, millis)
-          gnomify()
+            if (gnome.countDown) gnome.countDown -= millis
+            else if (!gnome.move(path, millis)) {
+              player.hp -= 50
+              gnome.countDown = 300
+              console.log(player.hp)
+            }
           })
+          gnomify()
         }
     });
 

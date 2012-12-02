@@ -1,8 +1,11 @@
 define([
     "dojo/_base/declare",
     "./Circle",
-    "app/imageLoad!./resources/images/gnome.png"
-], function(declare, Circle, gnomeImg) {
+    "app/imageLoad!./resources/images/gnome.png",
+    "app/imageLoad!./resources/images/gnomesplosion1.png",
+    "app/imageLoad!./resources/images/gnomesplosion2.png",
+    "app/imageLoad!./resources/images/gnomesplosion3.png"
+], function(declare, Circle, gnomeImg, exp1, exp2, exp3) {
     return declare(Circle, {
         // Turn on manual constructor chaining.
         "-chains-": {
@@ -31,6 +34,11 @@ define([
 
         draw: function(context) {
             context.drawImage(this.image, this.x + this._relativeImageX, this.y + this._relativeImageY);
+            if (this.countDown) {
+              if (this.countDown > 200) this.image = exp1
+              else if (this.countDown > 100) this.image = exp2
+              else this.image = exp3
+            }
         }
     });
 });

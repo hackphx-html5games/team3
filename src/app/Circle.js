@@ -1,11 +1,11 @@
-define([ "dojo/_base/declare" ], function(declare, lang) {
+define([ "dojo/_base/declare", "frozen/Sprite", "frozen/Animation" ], function(declare, Sprite, Animation) {
     function distance(p1, p2) {
         var x = p1.x - p2.x,
             y = p1.y - p2.y;
         return Math.sqrt(x*x + y*y);
     }
 
-    return declare(null, {
+    return declare(Sprite, {
         x: 0,
         y: 0,
         dx: .1,
@@ -33,7 +33,10 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
 
         move: function (path, ms) {
           var dest = path[this.wp]
-          if (!dest) return this.hp = -10
+          if (!dest) {
+            this.hp = -10
+            return false
+          }
           this.target = dest
           var diffX = this.x - dest.x
           var diffY = this.y - dest.y
@@ -49,6 +52,7 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
           if (this.collidesWithCircle(dest)) {
             this.wp += 1
           }
+          return true
         },
 
         shoot: function (path, ms) {
