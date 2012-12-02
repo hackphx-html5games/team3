@@ -4,8 +4,11 @@ define([
     "app/imageLoad!./resources/images/gnome.png",
     "app/imageLoad!./resources/images/gnomesplosion1.png",
     "app/imageLoad!./resources/images/gnomesplosion2.png",
+    "app/imageLoad!./resources/images/gnomesplosion3.png",
+    "app/imageLoad!./resources/images/gnomesplosion1.png",
+    "app/imageLoad!./resources/images/gnomesplosion2.png",
     "app/imageLoad!./resources/images/gnomesplosion3.png"
-], function(declare, Circle, gnomeImg, exp1, exp2, exp3) {
+], function(declare, Circle, gnomeImg, exp1, exp2, exp3, d1, d2, d3) {
     return declare(Circle, {
         // Turn on manual constructor chaining.
         "-chains-": {
@@ -38,6 +41,11 @@ define([
               if (this.countDown > 200) this.image = exp1
               else if (this.countDown > 100) this.image = exp2
               else this.image = exp3
+            }
+            if (this.death) {
+              if (this.death> 200) this.image = gnomehit1
+              else if (this.death> 100) this.image = gnomehit2
+              else this.image = gnomehit3
             }
         }
     });

@@ -95,7 +95,13 @@ require([
         update: function(millis){
           gnomes = gnomes.filter(function (gnome) {
             if (gnome.countDown && gnome.countDown > 0) return true
-            return gnome.isAlive()
+            if (gnome.death && gnome.death > 0) return true
+            if (gnome.isAlive()) return true
+            if (!gnome.dead) {
+              gnome.dead = true
+              gnome.death = 300
+              return true
+            }
           })
 
           bullets.forEach(function (bullet) {
@@ -112,6 +118,7 @@ require([
 
           gnomes.forEach(function (gnome) {
             if (gnome.countDown) gnome.countDown -= millis
+            if (gnome.death) gnome.death -= millis
             else if (!gnome.move(path, millis)) {
               player.hp -= 50
               gnome.countDown = 300
