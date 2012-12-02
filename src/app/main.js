@@ -33,23 +33,25 @@ require([
     ]
 
   path = path.map(function (obj) {
-    obj.radius = 20
+    obj.radius = 10
     return new Circle(obj)
   })
-  console.log(path)
 
   gnomes.push(new Gnome(hole))
 
     var circle = new Circle({
         x: 400,
         y: 600,
-        radius: 10
+        radius: 100
     });
 
     //setup a GameCore instance
     var game = new GameCore({
         canvasId: 'canvas',
         resourceManager: rm,
+        initInput: function (im) {
+
+        },
         draw: function(context){
             context.drawImage(backImg, 0, 0, this.width, this.height);
 
@@ -59,7 +61,7 @@ require([
             var color = gnomes[0].collidesWithCircle(circle) ? "red" : "green";
             context.fillStyle = color;
             context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI + 1);
-            
+
             // Draw the gnome's collision circle.
             context.closePath();
             context.fill();
@@ -92,4 +94,5 @@ require([
 
     //launch the game!
     game.run()
+
 });

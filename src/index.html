@@ -5,7 +5,12 @@
 </head>
 <body>
     <canvas id="canvas" width="800" height="600">Your browser doesn't support canvas.</canvas>
+    <div id="score"></div>
 
+    <script>
+      // Ghetto jquery
+      if (typeof $ !== 'function') $ = document.querySelectorAll.bind(document)
+    </script>
     <script src="frozen/frozen.js.uncompressed.js"></script>
     <script src="app/run.js"></script>
 </body>

@@ -37,8 +37,6 @@ define([ "dojo/_base/declare" ], function(declare, lang) {
           var relX = ms*this.dx
           var relY = ms*this.dy
 
-          console.log([dest, diffX, diffY, relX, relY])
-
           if (diffX > 0) this.x -= relX
           else if (diffX < 0) this.x += relX
 
