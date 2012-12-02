@@ -10,7 +10,7 @@ require([
 ], function(GameCore, ResourceManager, Gnome, Circle, Tower, Bullet, keys) {
     //setup a ResourceManager to use in the game
     var rm = new ResourceManager()
-      , backImg = rm.loadImage('app/resources/images/gamebackround.png')
+      , backImg = rm.loadImage('app/resources/images/gamebackroundhome.png')
       , hole = { x: 800, y: 0, hp: 200 }
       , interval = 1000
       , gnomes = []
@@ -69,13 +69,6 @@ require([
             context.beginPath();
 
             // Draw collision test circle
-            var color = gnomes[0].collidesWithCircle(circle) ? "red" : "green";
-            context.fillStyle = color;
-            context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI + 1);
-
-            // Draw the gnome's collision circle.
-            context.closePath();
-            context.fill();
 
             towers.forEach(function (tower) {
               tower.draw(context);
