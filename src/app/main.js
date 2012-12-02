@@ -11,6 +11,8 @@ require([
   //setup a ResourceManager to use in the game
   var rm = new ResourceManager()
     , backImg = rm.loadImage('app/resources/images/gamebackroundhome.png')
+    , otherBkg = rm.loadImage('app/resources/images/gameover.png')
+
     , hole = { x: 800, y: 0, hp: 200 }
     , interval = 1000
     , gnomes = []
@@ -67,6 +69,10 @@ require([
           }
         },
         draw: function(context){
+            if (player.hp <= 0) {
+              context.drawImage(otherBkg, 0, 0, this.width, this.height);
+              return
+            }
             context.drawImage(backImg, 0, 0, this.width, this.height);
 
             context.beginPath();
@@ -131,6 +137,7 @@ require([
       obj.lastShot = now
       if (now > lastTower + interval) {
         towers.push(new Tower(obj))
+        if (towers.length >= 10) towers.shift()
         lastTower = now
       }
     }
